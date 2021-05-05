@@ -7,16 +7,16 @@ public class Location {
 		int orderNum;
 	    String address;
 	    double waitTime;
-	    double Latitude;
-	    double Longitude;
+	    double latitude;
+	    double longitude;
 
 	    //location constructor
-	    public Location(int orderNum, String address, double waitTime, double Latitude, double Longitude){
+	    public Location(int orderNum, String address, double waitTime, double Latitude, double longitude){
 	        this.orderNum = orderNum;
 	        this.address = address;
 	        this.waitTime = waitTime;
-	        this.Latitude = Latitude;
-	        this.Longitude = Longitude;
+	        this.latitude = Latitude;
+	        this.longitude = longitude;
 	    }
 
 	    //getter methods for the instance & class variables
@@ -33,11 +33,11 @@ public class Location {
 	    }
 
 	    public double getLatitude() {
-	        return Latitude;
+	        return latitude;
 	    }
 
 	    public double getLongitude() {
-	        return Longitude;
+	        return longitude;
 	    }
 	    
 	    public static int getNumLocations() {

@@ -105,8 +105,8 @@ public class GUI extends WindowAdapter implements ActionListener {
 		frame.add(tf_nextlocaddress);
 		
 		//display of next delivery co-ordinates
-		lbl_nextlocation = new JLabel("Next Location Co-ordinates");
-		lbl_nextlocation.setBounds(20, 400, 200, 25);
+		lbl_nextlocation = new JLabel("Next Location Co-ordinates & Directions");
+		lbl_nextlocation.setBounds(20, 400, 300, 25);
 		frame.add(lbl_nextlocation);
 		
 		lbl_latitude = new JLabel("Latitude");
@@ -126,7 +126,7 @@ public class GUI extends WindowAdapter implements ActionListener {
 		frame.add(tf_longitude);
 		
 		//display of compass bearing to next delivery location
-		lbl_nextlocationbearing = new JLabel("Compass Bearing (degrees)");
+		lbl_nextlocationbearing = new JLabel("Initial Compass Bearing (degrees)");
 		lbl_nextlocationbearing.setBounds(20, 480, 200, 25);
 		frame.add(lbl_nextlocationbearing);
 		
