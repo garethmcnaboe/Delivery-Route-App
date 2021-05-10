@@ -24,6 +24,7 @@ public class Location {
 	    //getter methods for the instance & class variables
 	    public int getOrderNum(){
 	        return this.orderNum;
+
 	    }
 
 	    public String getAddress(){
