@@ -3,24 +3,25 @@ package com.company;
 public class Edge {
 
 	//fields to be included in edge objects
-    int location1;
-    int location2;
+    Location location1;
+    Location location2;
     double distance;
     double bearing;
 
     //constructor to create edge objects
-    Edge(int location1, int location2, double distance){
+    Edge(Location location1, Location location2, double distance, double bearing){
         this.location1 = location1;
         this.location2 = location2;
         this.distance = distance;
+        this.bearing = bearing;
     }
 
     //getter methods to return attributes of edge objects
-    public int getLocation1(){
+    public Location getLocation1(){
         return this.location1;
     }
 
-    public int getLocation2(){
+    public Location getLocation2(){
         return this.location2;
     }
 
@@ -100,6 +101,63 @@ public class Edge {
             bearing = degrees - bearing;
         }
         return bearing;
+    }
+
+    //method to create the route array
+    public static Edge[] createRouteArray(Location[] locationArray, int numLocations){
+        Edge [] routeArray = new Edge[locationArray.length];
+
+        Location homeDepot = new Location(0, "3 Mill Street, Maynooth, Co. Kildare", 0, 53.38122, -6.59278);
+
+        Location location1 = homeDepot;
+        Location location2 = locationArray[0];
+        double bearing = (double) Math.round(bearingCalculator(location1, location2) * 100) / 100;
+        double distance = (double) Math.round(circleCalculator(location1, location2) * 100 / 100);
+
+        routeArray[0] = new Edge(location1, location2, distance, bearing);
+
+        for(int i = 1; i< numLocations; i++) {
+            Location templocation1 = locationArray[i - 1];
+            Location templocation2 = locationArray[i];
+            double tempbearing = (double) Math.round(bearingCalculator(templocation1, templocation2) * 100) / 100;
+            double tempdistance = (double) Math.round(circleCalculator(templocation1, templocation2) * 100) / 100;
+
+            routeArray[i] = new Edge(templocation1, templocation2, tempdistance, tempbearing);
+        }
+
+        return routeArray;
+    }
+
+    //calculates the total distance from the start of the route at Apache Pizza Maynooth until the last delivery
+    public static double calculateTotalDistance(Edge[] routeArray, int numLocations){
+        double totaldistance = 0;
+
+        for(int i = 0; i< numLocations; i++){
+            totaldistance = totaldistance + routeArray[i].distance;
+        }
+
+        totaldistance = (double) Math.round((totaldistance) * 100)/100;
+
+        return totaldistance;
+    }
+
+    //calculates the total bad minutes from the start of the route at Apache Pizza Maynooth
+    public static double calculateTotalBadMin(Edge[] routeArray, int numLocations){
+        double totalBadMin = 0;
+        double totalMin = 0;
+
+        for(int i = 0; i<numLocations; i++){
+            totalMin = totalMin + routeArray[i].distance;
+            double temp = totalMin + routeArray[i].location2.waitTime;
+
+            if(temp>30){
+                temp = temp - 30;
+                totalBadMin = totalBadMin + temp;
+            }
+        }
+
+        totalBadMin = (double) Math.round((totalBadMin) * 100)/100;
+        return totalBadMin;
     }
 
 }

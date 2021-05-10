@@ -18,7 +18,7 @@ public class EdgeHashTable {
             	double temp = Edge.circleCalculator(locationArray[row], locationArray[col]);
             	System.out.println(temp);
             	distance2DArray[row][col] = temp;
-            	edge2DArray[row][col] = new Edge(row, col, temp);
+            	//edge2DArray[row][col] = new Edge(row, col, temp);
             }
         }
     }

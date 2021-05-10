@@ -1,5 +1,7 @@
 package com.company;
 
+import java.util.Random;
+
 public class Location {
 	    //keeps track of number of location objects
 		static int numLocations = 0;
@@ -50,7 +52,7 @@ public class Location {
 			//System.out.println(inputData.length());
 			
 			Location[] locationArray = new Location[100];
-		
+
 			//tracks characters in the input string.
 			int charCounter = 0;
 			
@@ -116,17 +118,9 @@ public class Location {
 							tempWaitTime1 = Double.parseDouble(tempWaitTime);
 							tempLatitude1 = Double.parseDouble(tempLatitude);
 							tempLongitude1 = Double.parseDouble(tempLongitude);
-							
-							//System.out.println("InvoiceNum: " + tempInvoiceNum1);
-							//System.out.println("Address: " + tempAddress);
-							//System.out.println("Time: " + tempWaitTime1);
-							//System.out.println("Latitude: " + tempLatitude1);
-							//System.out.println("Longitude: " +  tempLongitude1);
-							//System.out.println(charCounter);
 						
 							//creates the location object and places into the location Array
 							locationArray[numLocations] = new Location(tempInvoiceNum1, tempAddress, tempWaitTime1, tempLatitude1, tempLongitude1);
-							//System.out.println("Creating object: " +arrayIndex);
 							
 							//increment the array counter			
 							numLocations++;	
@@ -138,10 +132,39 @@ public class Location {
 						}
 						if(controlNum != 5) {
 						charCounter++;
-						//System.out.println(charCounter);
 						}
 					}	
 			}
 			return locationArray;
-		}    
+		}
+
+
+		//method which randomly shuffles the locationArray
+		//Uses the Fisher-Yates Shuffle
+		public static Location[] shuffleArray(Location[] locationArray, int numLocations){
+	    	Random rnd = new Random();
+
+	    	for(int i = numLocations - 1; i>0; i--){
+
+	    		int j = rnd.nextInt(i+1);
+
+	    		//swap entries in the array
+	    		Location temp = locationArray[i];
+	    		locationArray[i] = locationArray[j];
+	    		locationArray[j] = temp;
+			}
+	    	return locationArray;
+		}
+
+		public static String createDeliverySequence(Location[] locationArray, int numLocations){
+	    	String deliverySequence = "";
+
+	    	for(int i = 0; i<numLocations-1; i++) {
+				deliverySequence = deliverySequence + locationArray[i].orderNum + ", ";
+			}
+	    	deliverySequence = deliverySequence.substring(0, deliverySequence.length()-2);
+
+	    	return deliverySequence;
+		}
+
 	}

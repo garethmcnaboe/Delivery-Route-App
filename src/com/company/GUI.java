@@ -7,13 +7,18 @@ import javax.swing.*;
 public class GUI extends WindowAdapter implements ActionListener {
 	
 	JFrame frame;
-	JLabel lbl_heading, lbl_deliveryseq, lbl_totalbadminutes, lbl_nextlocnum, lbl_nextlocaddress, 
+	JLabel lbl_heading, lbl_deliveryseq, lbl_totaldistance, lbl_totalbadminutes, lbl_nextlocnum, lbl_nextlocaddress,
 	lbl_nextlocation, lbl_latitude, lbl_longitude, lbl_nextlocationbearing, lbl_nextlocationdistance,
 	lbl_counter, lbl_total;
-	JTextField tf_totalbadminutes, tf_nextlocnum, tf_nextlocaddress, 
+	JTextField tf_totaldistance, tf_totalbadminutes, tf_nextlocnum, tf_nextlocaddress,
 	tf_latitude, tf_longitude, tf_nextlocationbearing, tf_nextlocationdistance, tf_counter, tf_total;
 	JTextArea ta_deliveryseq;
 	JButton button1, button2, button3;
+	Location homeDepot;
+	Location [] locationArray;
+	Edge [] routeArray;
+	String deliverySequence;
+	Double totalDistance, totalBadMin;
 	
 	int counter = 1;
 	int numLocations;
@@ -56,10 +61,19 @@ public class GUI extends WindowAdapter implements ActionListener {
 		frame.add(lbl_deliveryseq);
 		
 		ta_deliveryseq = new JTextArea();
-		ta_deliveryseq.setBounds(160, 125, 300, 100);
+		ta_deliveryseq.setBounds(160, 125, 300, 60);
 		ta_deliveryseq.setLineWrap(true);
 		frame.add(ta_deliveryseq);
-		
+
+		//display of total distance covered
+		lbl_totaldistance = new JLabel("Total Distance Covered");
+		lbl_totaldistance.setBounds(20, 200, 140, 25);
+		frame.add(lbl_totaldistance);
+
+		tf_totaldistance = new JTextField(50);
+		tf_totaldistance.setBounds(160, 200, 100, 25);
+		frame.add(tf_totaldistance);
+
 		//display of total bad minutes
 		lbl_totalbadminutes = new JLabel("Total Bad Minutes"); 
 		lbl_totalbadminutes.setBounds(20, 240, 140, 25);
@@ -135,7 +149,7 @@ public class GUI extends WindowAdapter implements ActionListener {
 		frame.add(tf_nextlocationbearing);
 		
 		//display distance to next delivery location
-		lbl_nextlocationdistance = new JLabel("Distance to Next Delivery (meters)");
+		lbl_nextlocationdistance = new JLabel("Distance to Next Delivery (Km)");
 		lbl_nextlocationdistance.setBounds(20, 520, 200, 25);
 		frame.add(lbl_nextlocationdistance);
 		
@@ -152,77 +166,80 @@ public class GUI extends WindowAdapter implements ActionListener {
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			}
 	}
-	
+
+	//method which is called whenever one of the buttons are pressed
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+
+		//runs when the enter order information button is pressed.
 		if(e.getSource() == button1) {
-			//System.out.println("GUI Method 1 called");
-			
-			String inputData = JOptionPane.showInputDialog(null,"Enter Delivery Info String");
-			//System.out.println(inputData);
-			
-			Location [] locationArray = new Location[100]; 
+
+			JFrame component1 = new JFrame();
+			component1.setSize(500, 500);
+			String inputData = JOptionPane.showInputDialog(component1,"Enter Delivery Info String");
+
+			//Creates an array of 100 Location Objects and then populates it
+			locationArray = new Location[101];
 			locationArray = Location.ParseInput(inputData);
-			
+			//Gets the total number of locations generated
 			numLocations = Location.getNumLocations();
-			
-			EdgeHashTable.populateHashTable(locationArray, numLocations);
-			EdgeHashTable.printHashTable();
-			
-			/*
-			for(int i = 0; i < 40; i++) {	
-				System.out.print(locationArray[i].getOrderNum() + " ");
-				System.out.print(locationArray[i].getAddress() + " ");
-				System.out.print(locationArray[i].getWaitTime()+ " ");
-				System.out.print(locationArray[i].getLatitude() + " ");
-				System.out.print(locationArray[i].getLongitude()+ " ");
-				System.out.print(i);
-				System.out.println();
-			}
-			*/
-			
-			ta_deliveryseq.setText("0");
-			tf_totalbadminutes.setText("0");
+			//Calls method to randomly shuffle the Array
+			locationArray = Location.shuffleArray(locationArray,numLocations);
+			//Calls method to create delivery sequence String
+			deliverySequence = Location.createDeliverySequence(locationArray, numLocations);
+			//create an array of Edge objects
+			routeArray = Edge.createRouteArray(locationArray, numLocations);
+			//calls a method to calculate the total distance covered
+			totalDistance = Edge.calculateTotalDistance(routeArray, numLocations);
+			//calls a method to calculate the total bad minutes (i.e. mins over 30)
+			totalBadMin = Edge.calculateTotalBadMin(routeArray, numLocations);
+
+			//EdgeHashTable.populateHashTable(locationArray, numLocations);
+			//EdgeHashTable.printHashTable();
+
+			ta_deliveryseq.setText(deliverySequence);
+			tf_totaldistance.setText(Double.toString(totalDistance));
+			tf_totalbadminutes.setText(Double.toString(totalBadMin));
 			tf_counter.setText(Integer.toString(counter)); 
 			tf_total.setText(Integer.toString(numLocations));
-			tf_nextlocnum.setText("0");
-			tf_nextlocaddress.setText("0"); 
-			tf_latitude.setText("0");
-			tf_longitude.setText("0");
-			tf_nextlocationbearing.setText("0");
-			tf_nextlocationdistance.setText("0");	
+			tf_nextlocnum.setText(Integer.toString(locationArray[counter-1].orderNum));
+			tf_nextlocaddress.setText(locationArray[counter-1].address);
+			tf_latitude.setText(Double.toString(locationArray[counter-1].latitude));
+			tf_longitude.setText(Double.toString(locationArray[counter-1].longitude));
+			tf_nextlocationbearing.setText(Double.toString(routeArray[counter-1].bearing));
+			tf_nextlocationdistance.setText(Double.toString(routeArray[counter-1].distance));
 		}
-		
+
+		//runs if the next button is pressed
 		if(e.getSource()== button2) {
-			//System.out.println("GUI Method 2 called");
+
 			if(counter<Location.getNumLocations()) {
 			counter++;			
 			}
 			tf_counter.setText(Integer.toString(counter)); 
 			
-			tf_nextlocnum.setText("1");
-			tf_nextlocaddress.setText("1"); 
-			tf_latitude.setText("1");
-			tf_longitude.setText("1");
-			tf_nextlocationbearing.setText("1");
-			tf_nextlocationdistance.setText("1");
+			tf_nextlocnum.setText(Integer.toString(locationArray[counter-1].orderNum));
+			tf_nextlocaddress.setText(locationArray[counter-1].address);
+			tf_latitude.setText(Double.toString(locationArray[counter-1].latitude));
+			tf_longitude.setText(Double.toString(locationArray[counter-1].longitude));
+			tf_nextlocationbearing.setText(Double.toString(routeArray[counter-1].bearing));
+			tf_nextlocationdistance.setText(Double.toString(routeArray[counter-1].distance));
 		}
-		
+
+		//run if the previous button is pressed
 		if(e.getSource()== button3) {
-			//System.out.println("GUI Method 3 called");
 			
 			if(counter>1) {
 			counter--;
 			}
 			tf_counter.setText(Integer.toString(counter)); 
 		
-			tf_nextlocnum.setText("2");
-			tf_nextlocaddress.setText("2"); 
-			tf_latitude.setText("2");
-			tf_longitude.setText("2");
-			tf_nextlocationbearing.setText("2");
-			tf_nextlocationdistance.setText("2");	
+			tf_nextlocnum.setText(Integer.toString(locationArray[counter-1].orderNum));
+			tf_nextlocaddress.setText(locationArray[counter-1].address);
+			tf_latitude.setText(Double.toString(locationArray[counter-1].latitude));
+			tf_longitude.setText(Double.toString(locationArray[counter-1].longitude));
+			tf_nextlocationbearing.setText(Double.toString(routeArray[counter-1].bearing));
+			tf_nextlocationdistance.setText(Double.toString(routeArray[counter-1].distance));
 		}
 		
 	}
