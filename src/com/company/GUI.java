@@ -9,11 +9,13 @@ public class GUI extends WindowAdapter implements ActionListener {
 	JFrame frame;
 	JLabel lbl_heading, lbl_deliveryseq, lbl_totaldistance, lbl_totalbadminutes, lbl_nextlocnum, lbl_nextlocaddress,
 	lbl_nextlocation, lbl_latitude, lbl_longitude, lbl_nextlocationbearing, lbl_nextlocationdistance,
-	lbl_counter, lbl_total;
+	lbl_counter, lbl_total, lbl_map;
 	JTextField tf_totaldistance, tf_totalbadminutes, tf_nextlocnum, tf_nextlocaddress,
 	tf_latitude, tf_longitude, tf_nextlocationbearing, tf_nextlocationdistance, tf_counter, tf_total;
 	JTextArea ta_deliveryseq;
 	JButton button1, button2, button3;
+	ImageIcon map;
+
 	Location homeDepot;
 	Location [] locationArray;
 	Edge [] routeArray;
@@ -26,7 +28,7 @@ public class GUI extends WindowAdapter implements ActionListener {
 	GUI(){
 		frame = new JFrame();
 		frame.setVisible(true);
-		frame.setSize(600, 650);
+		frame.setSize(1400, 800);
 		frame.setTitle("Gareth McNaboe 20252984 Delivery App");
 		frame.getContentPane().setBackground(Color.gray);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -156,7 +158,14 @@ public class GUI extends WindowAdapter implements ActionListener {
 		tf_nextlocationdistance = new JTextField();
 		tf_nextlocationdistance.setBounds(220, 520, 100, 25);
 		frame.add(tf_nextlocationdistance);
-	
+
+		//create map icon
+		map = new ImageIcon(getClass().getResource("map.png"));
+		lbl_map = new JLabel(map);
+		lbl_map.setBounds(500, 25, 856, 692);
+		frame.add(lbl_map);
+
+
 	}	
 	
 	//Method used to check if user wants to close down the application.
