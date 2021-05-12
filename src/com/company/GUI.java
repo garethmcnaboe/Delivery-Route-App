@@ -4,12 +4,12 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class GUI extends WindowAdapter implements ActionListener {
+public class GUI extends JFrame implements ActionListener, WindowListener {
 	
 	JFrame frame;
 	JLabel lbl_heading, lbl_deliveryseq, lbl_totaldistance, lbl_totalbadminutes, lbl_nextlocnum, lbl_nextlocaddress,
 	lbl_nextlocation, lbl_latitude, lbl_longitude, lbl_nextlocationbearing, lbl_nextlocationdistance,
-	lbl_counter, lbl_total, lbl_map;
+	lbl_counter, lbl_total, lbl_map, lbl_nextdeliverykey, lbl_subdeliverykey;
 	JTextField tf_totaldistance, tf_totalbadminutes, tf_nextlocnum, tf_nextlocaddress,
 	tf_latitude, tf_longitude, tf_nextlocationbearing, tf_nextlocationdistance, tf_counter, tf_total;
 	JTextArea ta_deliveryseq;
@@ -24,7 +24,9 @@ public class GUI extends WindowAdapter implements ActionListener {
 	
 	int counter = 1;
 	int numLocations;
-	
+
+	StaticGraphics graphic1 = new StaticGraphics();
+
 	GUI(){
 		frame = new JFrame();
 		frame.setVisible(true);
@@ -34,7 +36,9 @@ public class GUI extends WindowAdapter implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.setLayout(null);
 		frame.addWindowListener(this);
-		
+
+
+
 		lbl_heading = new JLabel("Apache Pizza Maynooth");
 		lbl_heading.setFont(new Font("Arial", Font.BOLD, 28));
 		lbl_heading.setForeground(Color.yellow);
@@ -159,21 +163,64 @@ public class GUI extends WindowAdapter implements ActionListener {
 		tf_nextlocationdistance.setBounds(220, 520, 100, 25);
 		frame.add(tf_nextlocationdistance);
 
+		//display the key for next and subsequent delivery
+		lbl_nextdeliverykey = new JLabel("Next Delivery");
+		lbl_nextdeliverykey.setBounds(20, 590, 150, 25);
+		frame.add(lbl_nextdeliverykey);
+
+		lbl_subdeliverykey = new JLabel("Subsequent Delivery");
+		lbl_subdeliverykey.setBounds(20, 630, 150, 25);
+		frame.add(lbl_subdeliverykey);
+
+		graphic1.setBounds(150, 600, 200, 100);
+		graphic1.setOpaque(false);
+		frame.add(graphic1);
+
 		//create map icon
 		map = new ImageIcon(getClass().getResource("map.png"));
 		lbl_map = new JLabel(map);
 		lbl_map.setBounds(500, 25, 856, 692);
 		frame.add(lbl_map);
+	}
 
 
-	}	
-	
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+
+	}
+
 	//Method used to check if user wants to close down the application.
 	public void windowClosing(WindowEvent e) {
 		int a = JOptionPane.showConfirmDialog(frame, "Are you sure you want to exit the app");
 			if(a==JOptionPane.YES_OPTION) {
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			}
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+
 	}
 
 	//method which is called whenever one of the buttons are pressed
@@ -252,5 +299,4 @@ public class GUI extends WindowAdapter implements ActionListener {
 		}
 		
 	}
-	
 }
