@@ -2,6 +2,10 @@ package com.company;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class GUI extends JFrame implements ActionListener, WindowListener {
@@ -37,24 +41,22 @@ public class GUI extends JFrame implements ActionListener, WindowListener {
 		frame.setLayout(null);
 		frame.addWindowListener(this);
 
-
-
 		lbl_heading = new JLabel("Apache Pizza Maynooth");
 		lbl_heading.setFont(new Font("Arial", Font.BOLD, 28));
 		lbl_heading.setForeground(Color.yellow);
-		lbl_heading.setBounds(330, 20, 400, 40);
+		lbl_heading.setBounds(0, 20, 400, 40);
 		frame.add(lbl_heading);	
 		
 		button1 = new JButton("Enter Order Information");
-		button1.setBounds(250, 65, 180, 35);
+		button1.setBounds(20, 65, 180, 35);
 		frame.add(button1);	
 		
 		button2 = new JButton("Next Delivery");
-		button2.setBounds(430, 65, 140, 35);
+		button2.setBounds(200, 65, 140, 35);
 		frame.add(button2);
 		
 		button3 = new JButton("Previous Delivery");
-		button3.setBounds(570, 65, 150, 35);
+		button3.setBounds(340, 65, 150, 35);
 		frame.add(button3);
 		
 		button1.addActionListener(this);
@@ -177,9 +179,22 @@ public class GUI extends JFrame implements ActionListener, WindowListener {
 		frame.add(graphic1);
 
 		//create map icon
-		map = new ImageIcon(getClass().getResource("s_map.png"));
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(new File("./map.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
+
+		Image dimg = img.getScaledInstance(964, 779,
+				Image.SCALE_SMOOTH);
+
+		map = new ImageIcon(dimg);
+
 		lbl_map = new JLabel(map);
-		lbl_map.setBounds(500, 125, 400, 323);
+		lbl_map.setBounds(450, 0, 1071, 866);
 		frame.add(lbl_map);
 	}
 
