@@ -30,7 +30,7 @@ public class GUI extends JFrame implements ActionListener, WindowListener {
 	GUI(){
 		frame = new JFrame();
 		frame.setVisible(true);
-		frame.setSize(1400, 800);
+		frame.setSize(930, 600);
 		frame.setTitle("Gareth McNaboe 20252984 Delivery App");
 		frame.getContentPane().setBackground(Color.gray);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -42,19 +42,19 @@ public class GUI extends JFrame implements ActionListener, WindowListener {
 		lbl_heading = new JLabel("Apache Pizza Maynooth");
 		lbl_heading.setFont(new Font("Arial", Font.BOLD, 28));
 		lbl_heading.setForeground(Color.yellow);
-		lbl_heading.setBounds(70, 20, 400, 40);
+		lbl_heading.setBounds(330, 20, 400, 40);
 		frame.add(lbl_heading);	
 		
 		button1 = new JButton("Enter Order Information");
-		button1.setBounds(10, 65, 180, 35);
+		button1.setBounds(250, 65, 180, 35);
 		frame.add(button1);	
 		
 		button2 = new JButton("Next Delivery");
-		button2.setBounds(190, 65, 140, 35);
+		button2.setBounds(430, 65, 140, 35);
 		frame.add(button2);
 		
 		button3 = new JButton("Previous Delivery");
-		button3.setBounds(330, 65, 150, 35);
+		button3.setBounds(570, 65, 150, 35);
 		frame.add(button3);
 		
 		button1.addActionListener(this);
@@ -112,7 +112,7 @@ public class GUI extends JFrame implements ActionListener, WindowListener {
 		frame.add(lbl_nextlocnum);
 	
 		tf_nextlocnum = new JTextField();
-		tf_nextlocnum.setBounds(220, 320, 50, 25);
+		tf_nextlocnum.setBounds(210, 320, 50, 25);
 		frame.add(tf_nextlocnum);
 		
 		//display of next delivery address
@@ -121,7 +121,7 @@ public class GUI extends JFrame implements ActionListener, WindowListener {
 		frame.add(lbl_nextlocaddress);
 		
 		tf_nextlocaddress = new JTextField();
-		tf_nextlocaddress.setBounds(220, 360, 250, 25);
+		tf_nextlocaddress.setBounds(210, 360, 250, 25);
 		frame.add(tf_nextlocaddress);
 		
 		//display of next delivery co-ordinates
@@ -165,21 +165,21 @@ public class GUI extends JFrame implements ActionListener, WindowListener {
 
 		//display the key for next and subsequent delivery
 		lbl_nextdeliverykey = new JLabel("Next Delivery");
-		lbl_nextdeliverykey.setBounds(20, 590, 150, 25);
+		lbl_nextdeliverykey.setBounds(500, 460, 150, 25);
 		frame.add(lbl_nextdeliverykey);
 
 		lbl_subdeliverykey = new JLabel("Subsequent Delivery");
-		lbl_subdeliverykey.setBounds(20, 630, 150, 25);
+		lbl_subdeliverykey.setBounds(500, 500, 150, 25);
 		frame.add(lbl_subdeliverykey);
 
-		graphic1.setBounds(150, 600, 200, 100);
+		graphic1.setBounds(650, 470, 200, 100);
 		graphic1.setOpaque(false);
 		frame.add(graphic1);
 
 		//create map icon
-		map = new ImageIcon(getClass().getResource("map.png"));
+		map = new ImageIcon(getClass().getResource("s_map.png"));
 		lbl_map = new JLabel(map);
-		lbl_map.setBounds(500, 25, 856, 692);
+		lbl_map.setBounds(500, 125, 400, 323);
 		frame.add(lbl_map);
 	}
 
