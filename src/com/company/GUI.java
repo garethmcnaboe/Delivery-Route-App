@@ -8,6 +8,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import static java.awt.Image.*;
+
 public class GUI extends JFrame implements ActionListener, WindowListener {
 	
 	JFrame frame;
@@ -29,7 +31,9 @@ public class GUI extends JFrame implements ActionListener, WindowListener {
 	int counter = 1;
 	int numLocations;
 
-	StaticGraphics graphic1 = new StaticGraphics();
+	StaticGraphics graphic1;
+	DynamicGraphics graphic2;
+
 
 	GUI(){
 		frame = new JFrame();
@@ -44,7 +48,7 @@ public class GUI extends JFrame implements ActionListener, WindowListener {
 		lbl_heading = new JLabel("Apache Pizza Maynooth");
 		lbl_heading.setFont(new Font("Arial", Font.BOLD, 28));
 		lbl_heading.setForeground(Color.yellow);
-		lbl_heading.setBounds(0, 20, 400, 40);
+		lbl_heading.setBounds(90, 20, 400, 40);
 		frame.add(lbl_heading);	
 		
 		button1 = new JButton("Enter Order Information");
@@ -167,35 +171,25 @@ public class GUI extends JFrame implements ActionListener, WindowListener {
 
 		//display the key for next and subsequent delivery
 		lbl_nextdeliverykey = new JLabel("Next Delivery");
-		lbl_nextdeliverykey.setBounds(500, 460, 150, 25);
+		lbl_nextdeliverykey.setBounds(20, 560, 150, 25);
 		frame.add(lbl_nextdeliverykey);
 
 		lbl_subdeliverykey = new JLabel("Subsequent Delivery");
-		lbl_subdeliverykey.setBounds(500, 500, 150, 25);
+		lbl_subdeliverykey.setBounds(20, 600, 150, 25);
 		frame.add(lbl_subdeliverykey);
 
-		graphic1.setBounds(650, 470, 200, 100);
+		graphic1 = new StaticGraphics();
+		graphic1.setBounds(170, 570, 200, 100);
 		graphic1.setOpaque(false);
 		frame.add(graphic1);
 
-		//create map icon
-		BufferedImage img = null;
-		try {
-			img = ImageIO.read(new File("./map.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		//display the map
+		graphic2 = new DynamicGraphics();
+		graphic2.setBounds(525, 30, 910,736);
+		graphic2.setOpaque(true);
+		frame.add(graphic2);
 
 
-
-		Image dimg = img.getScaledInstance(964, 779,
-				Image.SCALE_SMOOTH);
-
-		map = new ImageIcon(dimg);
-
-		lbl_map = new JLabel(map);
-		lbl_map.setBounds(450, 0, 1071, 866);
-		frame.add(lbl_map);
 	}
 
 
