@@ -250,6 +250,7 @@ public class GUI extends JFrame implements ActionListener, WindowListener {
 			numLocations = Location.getNumLocations();
 			//Calls method to randomly shuffle the Array
 			locationArray = Location.shuffleArray(locationArray,numLocations);
+
 			//Calls method to create delivery sequence String
 			deliverySequence = Location.createDeliverySequence(locationArray, numLocations);
 			//create an array of Edge objects
@@ -259,8 +260,9 @@ public class GUI extends JFrame implements ActionListener, WindowListener {
 			//calls a method to calculate the total bad minutes (i.e. mins over 30)
 			totalBadMin = Edge.calculateTotalBadMin(routeArray, numLocations);
 
-			//EdgeHashTable.populateHashTable(locationArray, numLocations);
-			//EdgeHashTable.printHashTable();
+
+
+
 
 			ta_deliveryseq.setText(deliverySequence);
 			tf_totaldistance.setText(Double.toString(totalDistance));
