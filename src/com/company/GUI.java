@@ -2,38 +2,37 @@ package com.company;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import static java.awt.Image.*;
-
 public class GUI extends JFrame implements ActionListener, WindowListener {
-	
+
 	JFrame frame;
 	JLabel lbl_heading, lbl_deliveryseq, lbl_totaldistance, lbl_totalbadminutes, lbl_nextlocnum, lbl_nextlocaddress,
 	lbl_nextlocation, lbl_latitude, lbl_longitude, lbl_nextlocationbearing, lbl_nextlocationdistance,
-	lbl_counter, lbl_total, lbl_map, lbl_nextdeliverykey, lbl_subdeliverykey;
+	lbl_counter, lbl_total, lbl_nextdeliverykey, lbl_subdeliverykey;
 	JTextField tf_totaldistance, tf_totalbadminutes, tf_nextlocnum, tf_nextlocaddress,
 	tf_latitude, tf_longitude, tf_nextlocationbearing, tf_nextlocationdistance, tf_counter, tf_total;
 	JTextArea ta_deliveryseq;
 	JButton button1, button2, button3;
-	ImageIcon map;
 
-	Location homeDepot;
-	Location [] locationArray;
-	Edge [] routeArray;
-	String deliverySequence;
-	Double totalDistance, totalBadMin;
-	
+	double totalDistance, totalBadMin, nextlocationdistance;
+
+	final double HOMEDEPOTLAT = 53.38197;
+	final double HOMEDEPOTLONG = -6.59274;
+	double lat1, long1, lat2, long2, lat3, long3, lat4, long4;
+
+	double[] depotDistances;
+	double[][] distance2DArray;
+	Edge [] routeArrayEdge;
 	int counter = 1;
 	int numLocations;
+	Location homeDepot;
+	Location [] locationArray;
+	short [] routeArrayShort;
+	String deliverySequence;
 
 	StaticGraphics graphic1;
 	DynamicGraphics graphic2;
-
 
 	GUI(){
 		frame = new JFrame();
@@ -184,19 +183,10 @@ public class GUI extends JFrame implements ActionListener, WindowListener {
 		frame.add(graphic1);
 
 		//display the map
-		graphic2 = new DynamicGraphics();
+		graphic2 = new DynamicGraphics(0, 0 , 0, 0,0 ,0,0,0 );
 		graphic2.setBounds(525, 30, 910,736);
 		graphic2.setOpaque(true);
 		frame.add(graphic2);
-
-
-	}
-
-
-
-	@Override
-	public void windowOpened(WindowEvent e) {
-
 	}
 
 	//Method used to check if user wants to close down the application.
@@ -205,6 +195,123 @@ public class GUI extends JFrame implements ActionListener, WindowListener {
 			if(a==JOptionPane.YES_OPTION) {
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			}
+	}
+
+	//method which is called whenever one of the buttons are pressed
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+		//runs when the enter order information button is pressed.
+		if(e.getSource() == button1) {
+			JFrame component1 = new JFrame();
+			component1.setSize(500, 500);
+			String inputData = JOptionPane.showInputDialog(component1,"Enter Delivery Info String");
+			procesInputData(inputData);
+			setPermanentTextFields();
+			refreshTextFields();
+			refreshMapDetails();
+		}
+
+		//runs if the next button is pressed
+		if(e.getSource()== button2) {
+
+			if(counter<Location.getNumLocations()) {
+			counter++;			
+			}
+			refreshTextFields();
+			refreshMapDetails();
+		}
+
+		//run if the previous button is pressed
+		if(e.getSource()== button3) {
+			
+			if(counter>1) {
+			counter--;
+			}
+			refreshTextFields();
+			refreshMapDetails();
+		}
+		
+	}
+
+	//method which sets the co-ordinates for mapping of next & subsequent deliveries
+	public void refreshMapDetails(){
+		if(counter == 1){
+			lat1 = HOMEDEPOTLAT;
+			long1 = HOMEDEPOTLONG;
+		}
+		else{
+			lat1 = locationArray[counter-2].latitude;
+			long1 = locationArray[counter-2].longitude;
+		}
+		lat2 = locationArray[counter-1].latitude;
+		long2 = locationArray[counter-1].longitude;
+
+		if(counter == 40){
+			lat3 = 0;
+			long3 = 0;
+			lat4 = 0;
+			long4 = 0;
+		}
+		else{
+			lat3 = locationArray[counter-1].latitude;
+			long3 = locationArray[counter-1].longitude;
+			lat4 = locationArray[counter].latitude;
+			long4 = locationArray[counter].longitude;
+		}
+
+		graphic2.setCoordinates(lat1, long1, lat2, long2, lat3, long3, lat4, long4);
+		graphic2.setArray(graphic2);
+		graphic2.repainter();
+	}
+
+	//Sets the Text Fields in the GUI which do not change
+	public void setPermanentTextFields(){
+		ta_deliveryseq.setText(deliverySequence);
+		tf_totaldistance.setText(Double.toString(totalDistance));
+		tf_totalbadminutes.setText(Double.toString(totalBadMin));
+		tf_total.setText(Integer.toString(numLocations));
+	}
+
+	//Sets the Text Fields in the GUI which do change
+	public void refreshTextFields(){
+		tf_counter.setText(Integer.toString(counter));
+		tf_nextlocnum.setText(Integer.toString(locationArray[counter-1].orderNum));
+		tf_nextlocaddress.setText(locationArray[counter-1].address);
+		tf_latitude.setText(Double.toString(locationArray[counter-1].latitude));
+		tf_longitude.setText(Double.toString(locationArray[counter-1].longitude));
+		tf_nextlocationbearing.setText(Double.toString(routeArrayEdge[counter-1].bearing));
+		nextlocationdistance = (double) Math.round(routeArrayEdge[counter-1].distance * 100)/100;
+		tf_nextlocationdistance.setText(Double.toString(nextlocationdistance));
+	}
+
+	//Takes the input string and calls various methods to process it and produce a route & data display in the Text Fields
+	public void procesInputData(String inputData){
+		//Creates an array of 100 Location Objects and then populates it
+		locationArray = new Location[101];
+		locationArray = Location.ParseInput(inputData);
+		//Gets the total number of locations generated
+		numLocations = Location.getNumLocations();
+		//Call method to calculate 2d array of distances and distances to the depot
+		distance2DArray = EdgeHashTable.populateHashTable(locationArray,numLocations);
+		depotDistances = EdgeHashTable.populateDepotDistances(locationArray, numLocations);
+		//Calls method to genetically identify a 'good' route
+		routeArrayShort = Genetic.algorithm(locationArray, numLocations,distance2DArray, depotDistances);
+		//Calls method which sorts the locationArray into the order of the routeArrayShort
+		locationArray = Location.reorganise(locationArray,numLocations,routeArrayShort);
+		//Calls method to create delivery sequence String
+		deliverySequence = Location.createDeliverySequence(locationArray, numLocations);
+		//create an array of Edge objects
+		routeArrayEdge = Edge.createRouteArray(locationArray, numLocations);
+		//calls a method to calculate the total distance covered
+		totalDistance = Edge.calculateTotalDistance(routeArrayEdge, numLocations);
+		//calls a method to calculate the total bad minutes (i.e. mins over 30)
+		totalBadMin = Edge.calculateTotalBadMin(routeArrayEdge, numLocations);
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+
 	}
 
 	@Override
@@ -230,84 +337,5 @@ public class GUI extends JFrame implements ActionListener, WindowListener {
 	@Override
 	public void windowDeactivated(WindowEvent e) {
 
-	}
-
-	//method which is called whenever one of the buttons are pressed
-	@Override
-	public void actionPerformed(ActionEvent e) {
-
-		//runs when the enter order information button is pressed.
-		if(e.getSource() == button1) {
-
-			JFrame component1 = new JFrame();
-			component1.setSize(500, 500);
-			String inputData = JOptionPane.showInputDialog(component1,"Enter Delivery Info String");
-
-			//Creates an array of 100 Location Objects and then populates it
-			locationArray = new Location[101];
-			locationArray = Location.ParseInput(inputData);
-			//Gets the total number of locations generated
-			numLocations = Location.getNumLocations();
-			//Calls method to randomly shuffle the Array
-			locationArray = Location.shuffleArray(locationArray,numLocations);
-
-			//Calls method to create delivery sequence String
-			deliverySequence = Location.createDeliverySequence(locationArray, numLocations);
-			//create an array of Edge objects
-			routeArray = Edge.createRouteArray(locationArray, numLocations);
-			//calls a method to calculate the total distance covered
-			totalDistance = Edge.calculateTotalDistance(routeArray, numLocations);
-			//calls a method to calculate the total bad minutes (i.e. mins over 30)
-			totalBadMin = Edge.calculateTotalBadMin(routeArray, numLocations);
-
-
-
-
-
-			ta_deliveryseq.setText(deliverySequence);
-			tf_totaldistance.setText(Double.toString(totalDistance));
-			tf_totalbadminutes.setText(Double.toString(totalBadMin));
-			tf_counter.setText(Integer.toString(counter)); 
-			tf_total.setText(Integer.toString(numLocations));
-			tf_nextlocnum.setText(Integer.toString(locationArray[counter-1].orderNum));
-			tf_nextlocaddress.setText(locationArray[counter-1].address);
-			tf_latitude.setText(Double.toString(locationArray[counter-1].latitude));
-			tf_longitude.setText(Double.toString(locationArray[counter-1].longitude));
-			tf_nextlocationbearing.setText(Double.toString(routeArray[counter-1].bearing));
-			tf_nextlocationdistance.setText(Double.toString(routeArray[counter-1].distance));
-		}
-
-		//runs if the next button is pressed
-		if(e.getSource()== button2) {
-
-			if(counter<Location.getNumLocations()) {
-			counter++;			
-			}
-			tf_counter.setText(Integer.toString(counter)); 
-			
-			tf_nextlocnum.setText(Integer.toString(locationArray[counter-1].orderNum));
-			tf_nextlocaddress.setText(locationArray[counter-1].address);
-			tf_latitude.setText(Double.toString(locationArray[counter-1].latitude));
-			tf_longitude.setText(Double.toString(locationArray[counter-1].longitude));
-			tf_nextlocationbearing.setText(Double.toString(routeArray[counter-1].bearing));
-			tf_nextlocationdistance.setText(Double.toString(routeArray[counter-1].distance));
-		}
-
-		//run if the previous button is pressed
-		if(e.getSource()== button3) {
-			
-			if(counter>1) {
-			counter--;
-			}
-			tf_counter.setText(Integer.toString(counter)); 
-		
-			tf_nextlocnum.setText(Integer.toString(locationArray[counter-1].orderNum));
-			tf_nextlocaddress.setText(locationArray[counter-1].address);
-			tf_latitude.setText(Double.toString(locationArray[counter-1].latitude));
-			tf_longitude.setText(Double.toString(locationArray[counter-1].longitude));
-			tf_nextlocationbearing.setText(Double.toString(routeArray[counter-1].bearing));
-			tf_nextlocationdistance.setText(Double.toString(routeArray[counter-1].distance));
-		}
-		
 	}
 }

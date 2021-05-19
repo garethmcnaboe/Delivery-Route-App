@@ -6,14 +6,14 @@ public class Location {
 	//keeps track of number of location objects
 	static int numLocations = 0;
 	//fields for location objects
-	int orderNum;
+	short orderNum;
 	String address;
 	double waitTime;
 	double latitude;
 	double longitude;
 
 	//location constructor
-	public Location(int orderNum, String address, double waitTime, double Latitude, double longitude) {
+	public Location(short orderNum, String address, double waitTime, double Latitude, double longitude) {
 		this.orderNum = orderNum;
 		this.address = address;
 		this.waitTime = waitTime;
@@ -22,7 +22,7 @@ public class Location {
 	}
 
 	//getter methods for the instance & class variables
-	public int getOrderNum(){
+	public short getOrderNum(){
 		return this.orderNum;
 	}
 
@@ -60,10 +60,10 @@ public class Location {
 			
 		while(stillChecking) {
 			//0 = invoiceNum / 1 = address / 2 = waitTime / 3 = latitude / 4 = longitude / 5 = create object
-			int controlNum = 0;
+			short controlNum = 0;
 			///Temp values
 			String tempInvoiceNum = "";
-			int tempInvoiceNum1 = 0;
+			short tempInvoiceNum1 = 0;
 			String tempAddress = "";
 			String tempWaitTime = "";
 			double tempWaitTime1 = 0.0;
@@ -114,7 +114,7 @@ public class Location {
 				//creates object and places in array.
 				if(controlNum == 5) {
 					//convert into appropriate data types
-					tempInvoiceNum1 = Integer.parseInt(tempInvoiceNum);
+					tempInvoiceNum1 = Short.parseShort(tempInvoiceNum);
 					tempWaitTime1 = Double.parseDouble(tempWaitTime);
 					tempLatitude1 = Double.parseDouble(tempLatitude);
 					tempLongitude1 = Double.parseDouble(tempLongitude);
@@ -135,9 +135,28 @@ public class Location {
 				}
 			}
 		}
+
+
+
+
+
 		return locationArray;
 	}
 
+	//Method to sort the location array into the same order as the genetic algorithm output
+	public static Location[] reorganise(Location[] locationArray, int numLocations, short[] routeArrayShort){
+		Location[] tempArray = locationArray.clone();
+
+		for(int i=0; i<numLocations; i++){
+			short temp = routeArrayShort[i];
+			int counter = 0;
+			while(temp != tempArray[counter].orderNum){
+				counter++;
+			}
+			locationArray[i] = tempArray[counter];
+		}
+		return locationArray;
+	}
 
 	//method which randomly shuffles the locationArray
 	//Uses the Fisher-Yates Shuffle

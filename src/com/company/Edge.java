@@ -107,12 +107,12 @@ public class Edge {
     public static Edge[] createRouteArray(Location[] locationArray, int numLocations){
         Edge [] routeArray = new Edge[locationArray.length];
 
-        Location homeDepot = new Location(0, "3 Mill Street, Maynooth, Co. Kildare", 0, 53.38122, -6.59278);
+        Location homeDepot = new Location((short) 0, "3 Mill Street, Maynooth, Co. Kildare", 0, 53.38122, -6.59278);
 
         Location location1 = homeDepot;
         Location location2 = locationArray[0];
         double bearing = (double) Math.round(bearingCalculator(location1, location2) * 100) / 100;
-        double distance = (double) Math.round(circleCalculator(location1, location2) * 100 / 100);
+        double distance = circleCalculator(location1, location2);
 
         routeArray[0] = new Edge(location1, location2, distance, bearing);
 
@@ -120,7 +120,7 @@ public class Edge {
             Location templocation1 = locationArray[i - 1];
             Location templocation2 = locationArray[i];
             double tempbearing = (double) Math.round(bearingCalculator(templocation1, templocation2) * 100) / 100;
-            double tempdistance = (double) Math.round(circleCalculator(templocation1, templocation2) * 100) / 100;
+            double tempdistance = circleCalculator(templocation1, templocation2);
 
             routeArray[i] = new Edge(templocation1, templocation2, tempdistance, tempbearing);
         }
@@ -155,9 +155,7 @@ public class Edge {
                 totalBadMin = totalBadMin + temp;
             }
         }
-
         totalBadMin = (double) Math.round((totalBadMin) * 100)/100;
         return totalBadMin;
     }
-
 }
