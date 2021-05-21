@@ -135,11 +135,6 @@ public class Location {
 				}
 			}
 		}
-
-
-
-
-
 		return locationArray;
 	}
 
@@ -175,6 +170,7 @@ public class Location {
 		return locationArray;
 	}
 
+	//Method which is used to create the delivery sequence in a string which can be displayed in the interface
 	public static String createDeliverySequence(Location[] locationArray, int numLocations){
 		String deliverySequence = "";
 

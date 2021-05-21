@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class GUI extends JFrame implements ActionListener, WindowListener {
+public class GUI extends JPanel implements ActionListener, WindowListener {
 
 	JFrame frame;
 	JLabel lbl_heading, lbl_deliveryseq, lbl_totaldistance, lbl_totalbadminutes, lbl_nextlocnum, lbl_nextlocaddress,
@@ -36,8 +36,8 @@ public class GUI extends JFrame implements ActionListener, WindowListener {
 
 	GUI(){
 		frame = new JFrame();
-		frame.setVisible(true);
-		frame.setSize(930, 600);
+
+		frame.setSize(1500, 900);
 		frame.setTitle("Gareth McNaboe 20252984 Delivery App");
 		frame.getContentPane().setBackground(Color.gray);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -70,7 +70,7 @@ public class GUI extends JFrame implements ActionListener, WindowListener {
 		lbl_deliveryseq = new JLabel("Full Delivery Sequence"); 
 		lbl_deliveryseq.setBounds(20, 125, 140, 25);
 		frame.add(lbl_deliveryseq);
-		
+
 		ta_deliveryseq = new JTextArea();
 		ta_deliveryseq.setBounds(160, 125, 300, 60);
 		ta_deliveryseq.setLineWrap(true);
@@ -187,6 +187,9 @@ public class GUI extends JFrame implements ActionListener, WindowListener {
 		graphic2.setBounds(525, 30, 910,736);
 		graphic2.setOpaque(true);
 		frame.add(graphic2);
+
+		//set the panel as visible after everything is visible.
+		frame.setVisible(true);
 	}
 
 	//Method used to check if user wants to close down the application.

@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 public class DynamicGraphics extends JPanel{
 
@@ -74,8 +75,9 @@ public class DynamicGraphics extends JPanel{
             Graphics2D g2d = (Graphics2D) g;
 
             //load and render the map file onto the screen
+            URL url = getClass().getResource("map.png");
             try {
-                mapImage = ImageIO.read(new File("C:\\Users\\garet\\IdeaProjects\\projectbackup\\src\\com\\company\\map.png"));
+                mapImage = ImageIO.read(new File(url.getPath()));
             }
             catch (IOException e) {
                 e.printStackTrace();

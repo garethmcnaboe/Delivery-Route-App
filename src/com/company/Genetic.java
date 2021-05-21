@@ -9,8 +9,7 @@ public class Genetic {
         int genCounter = 0;
 
         //Part 1: create the population array and populate it with copies of the route in original sequence.
-        int populationSize = numLocations * 30;
-        //numLocations is plus 1 so that we can attach the fitness of the route at the end.
+        int populationSize = numLocations * 5;
         //row for each member of population & column for each location they visit
         short[][] populationArray = new short[populationSize][numLocations];
 
@@ -45,7 +44,7 @@ public class Genetic {
         }
 
         //Part 4: Start the loop which will count time which eco system will run for.
-        long finish = System.currentTimeMillis() + 8000; // set end of time 8 seconds after start.
+        long finish = System.currentTimeMillis() + 8_000; // set end of time 8 seconds after start.
         while (System.currentTimeMillis() < finish) {
             genCounter++;
 
@@ -114,7 +113,7 @@ public class Genetic {
             }
 
             //Part 8: Mutate the selected routes by swapping two random stops in the order
-            for(int j = 0; j<1; j++) {
+            for(int j = 0; j<1; j++) { //determines the rate of mutation / number of swaps per generation.
                 for (int i = 0; i < populationSize; i++) {
                     int ran1 = r.nextInt(numLocations);
                     int ran2 = r.nextInt(numLocations);
@@ -135,5 +134,4 @@ public class Genetic {
 
        return bestRoute;
     }
-
 }
