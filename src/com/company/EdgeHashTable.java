@@ -23,7 +23,7 @@ public class EdgeHashTable {
 
     //creates an array of distances from home depot to each location
     public static double[] populateDepotDistances(Location[] locationArray, int numLocations){
-        Location homeDepot = new Location((short) 0, "3 Mill Street, Maynooth, Co. Kildare", 0, 53.38122, -6.59278);
+        Location homeDepot = new Location((short) 0, "3 Mill Street, Maynooth, Co. Kildare", 0, 53.38197, -6.59274);
         firstLegArray = new double[numLocations];
 
         for(int i=0; i<numLocations; i++) {
@@ -32,6 +32,15 @@ public class EdgeHashTable {
         }
         return firstLegArray;
     }
+
+
+
+
+
+
+
+
+
 
     //Print out all the values in the hash table in order to check it is functioning properly.
     //this method was used for planning & debugging. It is not called in the actual program.

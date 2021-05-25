@@ -26,6 +26,7 @@ public class Genetic {
         double lowestDistance = 10_000;
         double totalFitness = 0;
 
+
         //Part 3: use Fisher-Yates method to pseudo randomly shuffle all of the routes in the array
         //create an object of the Random Class
         Random r = new Random();
@@ -42,6 +43,7 @@ public class Genetic {
                 populationArray[i][k] = temp;
             }
         }
+
 
         //Part 4: Start the loop which will count time which eco system will run for.
         long finish = System.currentTimeMillis() + 8_000; // set end of time 8 seconds after start.

@@ -28,7 +28,7 @@ public class GUI extends JPanel implements ActionListener, WindowListener {
 	int numLocations;
 	Location homeDepot;
 	Location [] locationArray;
-	short [] routeArrayShort;
+	short [] greedyArrayShort,routeArrayShort;
 	String deliverySequence;
 
 	StaticGraphics graphic1;
@@ -298,8 +298,13 @@ public class GUI extends JPanel implements ActionListener, WindowListener {
 		//Call method to calculate 2d array of distances and distances to the depot
 		distance2DArray = EdgeHashTable.populateHashTable(locationArray,numLocations);
 		depotDistances = EdgeHashTable.populateDepotDistances(locationArray, numLocations);
+
+		//Calls method which runs the greedy algorithm
+		routeArrayShort = Greedy.algorithm(numLocations, distance2DArray, depotDistances, locationArray);
+
 		//Calls method to genetically identify a 'good' route
-		routeArrayShort = Genetic.algorithm(locationArray, numLocations,distance2DArray, depotDistances);
+		//routeArrayShort = Genetic.algorithm(locationArray, numLocations,distance2DArray, depotDistances);
+
 		//Calls method which sorts the locationArray into the order of the routeArrayShort
 		locationArray = Location.reorganise(locationArray,numLocations,routeArrayShort);
 		//Calls method to create delivery sequence String

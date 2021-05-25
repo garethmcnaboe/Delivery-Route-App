@@ -174,10 +174,10 @@ public class Location {
 	public static String createDeliverySequence(Location[] locationArray, int numLocations){
 		String deliverySequence = "";
 
-		for(int i = 0; i<numLocations-1; i++) {
-			deliverySequence = deliverySequence + locationArray[i].orderNum + ", ";
+		for(int i = 0; i<numLocations; i++) {
+			deliverySequence = deliverySequence + locationArray[i].orderNum + ",";
 		}
-		deliverySequence = deliverySequence.substring(0, deliverySequence.length()-2);
+		deliverySequence = deliverySequence.substring(0, deliverySequence.length()-1);
 
 		return deliverySequence;
 		}

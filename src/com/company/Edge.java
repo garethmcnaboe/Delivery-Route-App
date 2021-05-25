@@ -107,7 +107,7 @@ public class Edge {
     public static Edge[] createRouteArray(Location[] locationArray, int numLocations){
         Edge [] routeArray = new Edge[locationArray.length];
 
-        Location homeDepot = new Location((short) 0, "3 Mill Street, Maynooth, Co. Kildare", 0, 53.38122, -6.59278);
+        Location homeDepot = new Location((short) 0, "3 Mill Street, Maynooth, Co. Kildare", 0, 53.38197, -6.59274);
 
         Location location1 = homeDepot;
         Location location2 = locationArray[0];
@@ -135,7 +135,6 @@ public class Edge {
         for(int i = 0; i< numLocations; i++){
             totaldistance = totaldistance + routeArray[i].distance;
         }
-
         totaldistance = (double) Math.round((totaldistance) * 100)/100;
 
         return totaldistance;
