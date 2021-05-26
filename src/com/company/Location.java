@@ -1,7 +1,6 @@
 package com.company;
 
-import java.util.Random;
-
+//Class provides from a Location object together with the methods to create it from the input String.
 public class Location {
 	//keeps track of number of location objects
 	static int numLocations = 0;

@@ -1,5 +1,8 @@
 package com.company;
 
+
+//Class which includes a greedy algorithm creates a greedy route starting at each vertice
+//It selects the most efficient one.
 public class Greedy {
 
     //Main algorithm which will create Greedy Routes starting at each of the vertices.

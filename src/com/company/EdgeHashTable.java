@@ -1,5 +1,7 @@
 package com.company;
 
+
+//class with methods which create look up tables of the distances between vertices and depot
 public class EdgeHashTable {
 	
 	static double [][] distance2DArray;

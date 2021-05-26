@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+
+//class contains the main graphical user interface
 public class GUI extends JPanel implements ActionListener, WindowListener {
 
 	JFrame frame;

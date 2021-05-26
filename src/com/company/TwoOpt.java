@@ -1,7 +1,7 @@
 package com.company;
 
+//This method provides the methods for the 2-opt method which is used to improve the best greedy route.
 public class TwoOpt {
-
 
     public static short[] algorithm(int numLocatinos, short [] greedyRoute, double[][] distance2DArray, double[] depotDistances, Location[] locationArray ){
         short [] twoOptArray = greedyRoute;
@@ -22,7 +22,7 @@ public class TwoOpt {
                         //if new best is found then reset bests and restart the process again.
                         if (tempMinutes < bestBadMinutes) {
                             System.out.println(tempMinutes);
-                            twoOptArray = tempRoute;
+                            twoOptArray = tempRoute.clone();
                             bestBadMinutes = tempMinutes;
                             break outer; //calling break with the label so we come out of loop at the right location.
                         }
@@ -46,8 +46,8 @@ public class TwoOpt {
         }
 
         for (short l = 0; l < greedyRoute.length - 1; l++) {
-            short temp1 = (short) greedyRoute[l];
-            short temp2 = (short) greedyRoute[l + 1];
+            short temp1 = greedyRoute[l];
+            short temp2 = greedyRoute[l + 1];
             distance = distance + Distance2DArray[temp1 - 1][temp2 - 1];
 
             double minutes2 = locationArray[temp2 - 1].getWaitTime() + distance;
@@ -81,5 +81,4 @@ public class TwoOpt {
 
         return newArray;
     }
-
 }

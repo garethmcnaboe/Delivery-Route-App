@@ -1,5 +1,7 @@
 package com.company;
 
+
+//class which provides for the Edge objects and methods to create them
 public class Edge {
 
 	//fields to be included in edge objects
@@ -55,6 +57,7 @@ public class Edge {
         double latr2 = Math.toRadians(latd2);
 
         //Haversine Formula
+        //https://en.wikipedia.org/wiki/Great-circle_distance
         double part1 = Math.sin(latdiffr / 2) * Math.sin(latdiffr / 2);
         double part2 = Math.cos(latr1) * Math.cos(latr2) * Math.sin(longdiffr / 2) * Math.sin(longdiffr / 2);
         double subtotal = Math.sqrt(part1 + part2);
@@ -106,26 +109,27 @@ public class Edge {
     //method to create the route array
     public static Edge[] createRouteArray(Location[] locationArray, int numLocations,
                                           String HOMEDEPOTADDRESS, double HOMEDEPOTLAT, double HOMEDEPOTLONG){
-        Edge [] routeArray = new Edge[locationArray.length];
 
+        //create an EdgeArray to store the information
+        Edge [] routeArray = new Edge[locationArray.length];
+        //create a location object for the depot
         Location homeDepot = new Location((short) 0, HOMEDEPOTADDRESS, 0, HOMEDEPOTLAT, HOMEDEPOTLONG);
 
+        //code to create the first edge (from depot to first drop off point)
         Location location1 = homeDepot;
         Location location2 = locationArray[0];
         double bearing = (double) Math.round(bearingCalculator(location1, location2) * 100) / 100;
         double distance = circleCalculator(location1, location2);
-
         routeArray[0] = new Edge(location1, location2, distance, bearing);
 
+        //code to create the remaining edges (between the vertice in location array).
         for(int i = 1; i< numLocations; i++) {
             Location templocation1 = locationArray[i - 1];
             Location templocation2 = locationArray[i];
             double tempbearing = (double) Math.round(bearingCalculator(templocation1, templocation2) * 100) / 100;
             double tempdistance = circleCalculator(templocation1, templocation2);
-
             routeArray[i] = new Edge(templocation1, templocation2, tempdistance, tempbearing);
         }
-
         return routeArray;
     }
 

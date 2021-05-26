@@ -7,11 +7,14 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+
+//Class which contains the code for the map and dynamic lines which appear on it.
 public class DynamicGraphics extends JPanel{
 
     //These are all final values which set out the size of the map
     static final double LENGTHPIXELS = 736;
     static final double WIDTHPIXELS = 910;
+    //These are the final values which set the margins of the map
     static final double MAXLATITUDE = 53.412485;
     static final double MINLATITUDE = 53.283485;
     static final double MAXLONGITUDE = -6.45509;
