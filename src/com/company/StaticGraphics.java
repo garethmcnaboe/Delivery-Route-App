@@ -7,6 +7,7 @@ import java.awt.*;
 //lines superimposed on the map for next and subsequent delivery
 public class StaticGraphics extends JPanel {
 
+    //This component is used to draw the blue and oranges lines which on the main panel to the left.
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;

@@ -35,7 +35,6 @@ public class DynamicGraphics extends JPanel{
         this.long4 = long4;
         //creates array to store the
         coordinateArray = new double[8];
-        System.out.println("Graphics object created");
     }
     //Setter method which can be used to change the co-ordinates
     public void setCoordinates(double lat1, double long1, double lat2, double long2, double lat3, double long3, double lat4, double long4){
@@ -47,7 +46,6 @@ public class DynamicGraphics extends JPanel{
         this.long3 = long3;
         this.lat4 = lat4;
         this.long4 = long4;
-        System.out.println("Setter method called)");
     }
 
     //Setter method which sets the values in the array.
@@ -60,12 +58,10 @@ public class DynamicGraphics extends JPanel{
         coordinateArray[5] = object.long3;
         coordinateArray[6] = object.lat4;
         coordinateArray[7] = object.long4;
-        System.out.println("Set Array method called");
     }
 
     public void repainter(){
         repaint();
-        System.out.println("repaint method called");
     }
 
     @Override

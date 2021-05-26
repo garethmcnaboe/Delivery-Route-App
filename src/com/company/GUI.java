@@ -19,6 +19,7 @@ public class GUI extends JPanel implements ActionListener, WindowListener {
 
 	final double HOMEDEPOTLAT = 53.38197;
 	final double HOMEDEPOTLONG = -6.59274;
+	String HOMEDEPOTADDRESS = "3 Mill Street, Maynooth, Co. Kildare";
 	double lat1, long1, lat2, long2, lat3, long3, lat4, long4;
 
 	double[] depotDistances;
@@ -297,20 +298,17 @@ public class GUI extends JPanel implements ActionListener, WindowListener {
 		numLocations = Location.getNumLocations();
 		//Call method to calculate 2d array of distances and distances to the depot
 		distance2DArray = EdgeHashTable.populateHashTable(locationArray,numLocations);
-		depotDistances = EdgeHashTable.populateDepotDistances(locationArray, numLocations);
-
+		depotDistances = EdgeHashTable.populateDepotDistances(locationArray, numLocations,HOMEDEPOTADDRESS, HOMEDEPOTLAT, HOMEDEPOTLONG);
 		//Calls method which runs the greedy algorithm
-		routeArrayShort = Greedy.algorithm(numLocations, distance2DArray, depotDistances, locationArray);
-
-		//Calls method to genetically identify a 'good' route
-		//routeArrayShort = Genetic.algorithm(locationArray, numLocations,distance2DArray, depotDistances);
-
+		greedyArrayShort = Greedy.algorithm(numLocations, distance2DArray, depotDistances, locationArray);
+		//Calls method which runs the 2opt algorithm
+		routeArrayShort = TwoOpt.algorithm(numLocations, greedyArrayShort, distance2DArray, depotDistances, locationArray);
 		//Calls method which sorts the locationArray into the order of the routeArrayShort
 		locationArray = Location.reorganise(locationArray,numLocations,routeArrayShort);
 		//Calls method to create delivery sequence String
 		deliverySequence = Location.createDeliverySequence(locationArray, numLocations);
 		//create an array of Edge objects
-		routeArrayEdge = Edge.createRouteArray(locationArray, numLocations);
+		routeArrayEdge = Edge.createRouteArray(locationArray, numLocations, HOMEDEPOTADDRESS, HOMEDEPOTLAT, HOMEDEPOTLONG);
 		//calls a method to calculate the total distance covered
 		totalDistance = Edge.calculateTotalDistance(routeArrayEdge, numLocations);
 		//calls a method to calculate the total bad minutes (i.e. mins over 30)

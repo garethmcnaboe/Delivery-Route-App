@@ -22,8 +22,9 @@ public class EdgeHashTable {
     }
 
     //creates an array of distances from home depot to each location
-    public static double[] populateDepotDistances(Location[] locationArray, int numLocations){
-        Location homeDepot = new Location((short) 0, "3 Mill Street, Maynooth, Co. Kildare", 0, 53.38197, -6.59274);
+    public static double[] populateDepotDistances(Location[] locationArray, int numLocations,
+                                                  String HOMEDEPOTADDRESS, double HOMEDEPOTLAT, double HOMEDEPOTLONG){
+        Location homeDepot = new Location((short) 0, HOMEDEPOTADDRESS, 0, HOMEDEPOTLAT, HOMEDEPOTLONG);
         firstLegArray = new double[numLocations];
 
         for(int i=0; i<numLocations; i++) {
@@ -33,34 +34,12 @@ public class EdgeHashTable {
         return firstLegArray;
     }
 
-
-
-
-
-
-
-
-
-
     //Print out all the values in the hash table in order to check it is functioning properly.
     //this method was used for planning & debugging. It is not called in the actual program.
     public static void printHashTable() {
         for (int row = 0; row < distance2DArray.length; row++) {
             for (int col = 0; col < distance2DArray[0].length; col++) {
                 System.out.print(((double) Math.round((distance2DArray[row][col]) * 10) / 10) + " - ");
-            }
-            System.out.println();
-        }
-    }
-
-    //Prints out all the values in the hash table without duplicates (i.e. Road Atlas Triangle Table)
-    //this method was used for planning & debugging. It is not called in the actual program.
-    public static void printHashTableNoDuplicates(double[][] anArray){
-        for(int row = 0; row < anArray.length; row++){
-            int col = 0;
-            while(row > col){
-                System.out.print(((double)Math.round((anArray[row][col])*10)/10) + " - ");
-                col++;
             }
             System.out.println();
         }

@@ -104,10 +104,11 @@ public class Edge {
     }
 
     //method to create the route array
-    public static Edge[] createRouteArray(Location[] locationArray, int numLocations){
+    public static Edge[] createRouteArray(Location[] locationArray, int numLocations,
+                                          String HOMEDEPOTADDRESS, double HOMEDEPOTLAT, double HOMEDEPOTLONG){
         Edge [] routeArray = new Edge[locationArray.length];
 
-        Location homeDepot = new Location((short) 0, "3 Mill Street, Maynooth, Co. Kildare", 0, 53.38197, -6.59274);
+        Location homeDepot = new Location((short) 0, HOMEDEPOTADDRESS, 0, HOMEDEPOTLAT, HOMEDEPOTLONG);
 
         Location location1 = homeDepot;
         Location location2 = locationArray[0];

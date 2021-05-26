@@ -138,7 +138,7 @@ public class Location {
 		return locationArray;
 	}
 
-	//Method to sort the location array into the same order as the genetic algorithm output
+	//Method to sort the location array into the same order as the greedy/2opt algorithm output
 	public static Location[] reorganise(Location[] locationArray, int numLocations, short[] routeArrayShort){
 		Location[] tempArray = locationArray.clone();
 
@@ -149,23 +149,6 @@ public class Location {
 				counter++;
 			}
 			locationArray[i] = tempArray[counter];
-		}
-		return locationArray;
-	}
-
-	//method which randomly shuffles the locationArray
-	//Uses the Fisher-Yates Shuffle
-	public static Location[] shuffleArray(Location[] locationArray, int numLocations){
-		Random rnd = new Random();
-
-		for(int i = numLocations - 1; i>0; i--){
-
-			int j = rnd.nextInt(i+1);
-
-			//swap entries in the array
-			Location temp = locationArray[i];
-			locationArray[i] = locationArray[j];
-			locationArray[j] = temp;
 		}
 		return locationArray;
 	}
